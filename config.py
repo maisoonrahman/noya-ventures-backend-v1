@@ -1,9 +1,11 @@
-import os 
+import os
 
 class Config:
     DEBUG = True
-    DB_HOST = 'dev_db_host'
-    DB_USER = 'dev_db_user'
-    DB_PASSWORD = 'dev_db_pass'
-    DB_NAME = 'noya_vc_dev'
+
+    DB_HOST = os.getenv("DB_HOST")
+    DB_USER = os.getenv("DB_USER")
+    DB_PASSWORD = os.getenv("DB_PASSWORD")
+    DB_NAME = os.getenv("DB_NAME")
+    
     UPLOAD_FOLDER = os.path.join(os.getcwd(), 'instance', 'uploads')
