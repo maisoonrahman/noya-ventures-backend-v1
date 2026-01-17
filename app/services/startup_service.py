@@ -271,3 +271,25 @@ def get_startup_by_user(user_id):
     cursor = db.cursor(dictionary=True)
     cursor.execute("SELECT * FROM startups WHERE user_id=%s", (user_id,))
     return cursor.fetchone()
+
+# ------------------------------
+# Helper: Save intake step wrapper 
+# for each step
+# ------------------------------
+# Add this to startup_service.py
+def save_intake_step(user_id, step, data):
+    startup_id = get_or_create_startup(user_id, data)
+    
+    if step == 1:
+        save_founders(startup_id, data)
+    elif step == 2:
+        save_company_and_product(startup_id, data)
+    elif step == 3:
+        save_market_and_financials(startup_id, data)
+    elif step == 4:
+        finalize_application(startup_id, data)
+    else:
+        raise ValueError("Invalid step number")
+    
+    update_progress(startup_id, step)
+    return {"startup_id": startup_id, "step": step, "status": "saved"}
