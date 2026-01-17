@@ -5,7 +5,7 @@ This is the backend repo for Noya Ventures
 A minimal Flask REST API backend for startups, investors, and partners to connect around the world.
 
 Links:
-development: development.noya.vc
+test: test.noya.vc
 prod: noya.vc
 
 Handles:

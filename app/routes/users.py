@@ -1,20 +1,25 @@
 from flask import Blueprint, request, jsonify
-from app.services.user_service import signup_user, login_user, get_user_by_id
+from app.services.user_service import signup_user, login_user, get_user_by_id, get_all_users
 
 users_bp = Blueprint('users', __name__, url_prefix='/api/users')
 
-# List all users (for dev/testing)
+
+# -----------------------
+# List users (dev only)
+# -----------------------
 @users_bp.route('/', methods=['GET'])
 def list_users():
-    # Optional: admin-only in production
-    from app.services.user_service import get_all_users
     return jsonify(get_all_users())
 
-# Signup endpoint
+
+# -----------------------
+# Signup
+# -----------------------
 @users_bp.route('/signup', methods=['POST'])
 def signup():
     data = request.json
-    required_fields = ['email', 'password', 'role', 'company', 'country']
+
+    required_fields = ['email', 'password', 'role', 'country']
     if not all(field in data for field in required_fields):
         return jsonify({"error": "Missing required fields"}), 400
 
@@ -22,22 +27,24 @@ def signup():
     if "error" in user:
         return jsonify(user), 400
 
-    # Determine next step
     next_step = 'company_intake' if user['role'] == 'startup' else 'dashboard'
 
     return jsonify({
         "id": user['id'],
         "email": user['email'],
-        "company": user['company'],
-        "country": user['country'],
         "role": user['role'],
+        "country": user['country'],
         "next_step": next_step
     }), 201
 
-# Login endpoint
+
+# -----------------------
+# Login
+# -----------------------
 @users_bp.route('/login', methods=['POST'])
 def login():
     data = request.json
+
     if not data.get('email') or not data.get('password'):
         return jsonify({"error": "Email and password required"}), 400
 
@@ -47,9 +54,13 @@ def login():
 
     next_step = 'company_intake' if user['role'] == 'startup' else 'dashboard'
     user['next_step'] = next_step
+
     return jsonify(user)
 
-# Get user info by ID
+
+# -----------------------
+# Get user by ID
+# -----------------------
 @users_bp.route('/<int:user_id>', methods=['GET'])
 def get_user(user_id):
     user = get_user_by_id(user_id)

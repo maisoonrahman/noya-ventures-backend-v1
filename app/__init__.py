@@ -16,11 +16,15 @@ def create_app(config_object=None):
     from app.routes.documents import documents_bp
     from app.routes.users import users_bp
     from app.routes.startups import startups_bp
-    from app.routes.investors import investors_bp
+
+    # test blueprint
+    from app.routes.test import test_bp
 
     app.register_blueprint(users_bp)
     app.register_blueprint(documents_bp)
     app.register_blueprint(startups_bp)
-    app.register_blueprint(investors_bp)
+
+    # test blueprint
+    app.register_blueprint(test_bp)
 
     return app
