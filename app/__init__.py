@@ -1,26 +1,33 @@
 from flask import Flask
 from flask_cors import CORS
-from app.models.db import close_db
-from app.config import Config
+from app.models.db import get_db, close_db
+from config import Config
 
-def create_app():
+def create_app(config_object=None):
     app = Flask(__name__, instance_relative_config=True)
 
-    # loading config
-    app.config.from_object(Config)
+    if config_object:
+        app.config.from_object(config_object)
+    else: 
+        app.config.from_object(Config)
 
     CORS(app)
 
     app.teardown_appcontext(close_db)
 
-    from app.routes.users import users_bp
+    # Registering minimal blueprints for app to work
     from app.routes.documents import documents_bp
+    from app.routes.users import users_bp
     from app.routes.startups import startups_bp
+
+    # test blueprint
     from app.routes.test import test_bp
 
     app.register_blueprint(users_bp)
     app.register_blueprint(documents_bp)
     app.register_blueprint(startups_bp)
+
+    # test blueprint
     app.register_blueprint(test_bp)
 
     return app
