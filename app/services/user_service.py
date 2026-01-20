@@ -174,6 +174,7 @@ def normalize_country_name(raw_country: str) -> str:
         "us": "United States",
         "u.s.": "United States",
         "united states": "United States",
+        "united-states": "United States",
         "united states of america": "United States",
 
         # United Kingdom
@@ -185,12 +186,16 @@ def normalize_country_name(raw_country: str) -> str:
         "scotland": "United Kingdom",
         "wales": "United Kingdom",
         "northern ireland": "United Kingdom",
+        "united-kingdom": "United Kingdom",
+        "new-zealand": "New Zealand",
 
         # Common extras (optional)
-        "uae": "United Arab Emirates",
+        "united-arab-emirates": "United Arab Emirates",
         "emirates": "United Arab Emirates",
         "south korea": "Korea, Republic of",
+        "south-korea": "Korea, Republic of",
         "north korea": "Korea, Democratic People's Republic of",
+        "north-korea": "Korea, Democratic People's Republic of"
     }
 
     key = raw_country.strip().lower()
